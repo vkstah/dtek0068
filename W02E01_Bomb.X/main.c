@@ -13,9 +13,11 @@
 #include <avr/interrupt.h>
 #include <util/delay.h>
 
+// Global function used to define whether the program is counting down or not
 volatile uint8_t g_running = 1;
 
-int main(void) {
+int main(void)
+{
     // An array to display the digits (0 to 9), 10th being the blank digit
     uint8_t digits[] =
     {
@@ -32,7 +34,8 @@ int main(void) {
     PORTA.DIRCLR = PIN4_bm;
     // Trigger interrupts
     PORTA.PIN4CTRL = PORT_PULLUPEN_bm | PORT_ISC_RISING_gc;
-    // Start the countdown from 9
+    // Index is the actual numerical value displayed
+    // index = 9 because we start counting down from 9
     uint8_t index = 9;
     
     while (1)
@@ -40,6 +43,8 @@ int main(void) {
         // If global variable g_running equals 1, the program is counting down
         if (g_running == 1)
         {
+            // If the index is 0, we have counted down and the bomb has exploded
+            // When this is true, we keep blinking zero
             if (index == 0)
             {
                 // Set output to the corresponding digit
