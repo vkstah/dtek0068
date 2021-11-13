@@ -1,6 +1,8 @@
 /*
  * File:   main.c
  * Author: Vili Ståhlberg
+ * Description: Upgraded version of the W02E01 bomb program. Moved away from using delays
+ * to RTC and sleep.
  *
  * Created on 13 November 2021, 13:55
  */
