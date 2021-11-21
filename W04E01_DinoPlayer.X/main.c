@@ -11,6 +11,7 @@
 #include <avr/io.h>
 #include <util/delay.h>
 
+// This function will read and return the ADC result for LDR
 uint16_t ldr_read()
 {
     // Set reference voltage (2.5V)
@@ -33,6 +34,7 @@ uint16_t ldr_read()
     return ADC0.RES;
 }
 
+// This function will read and return the ADC result for trimpot
 uint16_t trimpot_read()
 {
     // Set reference voltage (VDD)
