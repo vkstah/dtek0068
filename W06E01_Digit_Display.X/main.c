@@ -1,6 +1,6 @@
 /*
  * File:   main.c
- * Author: Vili Ståhlberg
+ * Author: Vili StÃ¥hlberg
  *
  * Created on December 5, 2021, 6:34 PM
  */
@@ -50,10 +50,12 @@ void USART0_init(void)
     USART0.CTRLB |= USART_RXEN_bm;
 }
 
-// This task takes care of displaying the correct digit.
+// This task takes care of displaying the correct digit
 void display(void* parameter)
 {
     uint8_t digit;
+    
+    // Contains digits 0-9, character E and a blank display
     uint8_t digits[] =
     {
         0b00111111, 0b00000110,
@@ -75,6 +77,7 @@ void display(void* parameter)
     vTaskDelete(NULL);
 }
 
+// This task takes care of sending messages to the user via USART
 void send(void* parameter)
 {
     char c;
@@ -141,6 +144,7 @@ void receive(void* parameter){
         }
         if (xQueueSend(g_digit_queue, (void*)&digit, 10) == pdTRUE)
         {
+            // If the digit equals 10, send msg2 (error)
             if (digit == 10)
             {
                 for (uint8_t i = 0; i < strlen(msg2); i++)
@@ -152,6 +156,8 @@ void receive(void* parameter){
                     }
                 }
             }
+            
+            // If the digit equals anything else (0-9), send msg1 (valid digit)
             else
             {
                 for (uint8_t i = 0; i < strlen(msg1); i++)
@@ -184,7 +190,7 @@ int main(void)
     NULL
     );
     
-    // Create a task that handles sending messages via USART.
+    // Create a task that handles sending messages via USART
     xTaskCreate(
     send,
     "send",
@@ -194,7 +200,7 @@ int main(void)
     NULL
     );
     
-    // Create a task that handles reading messages.
+    // Create a task that handles reading messages
     xTaskCreate(
     receive,
     "receive",
